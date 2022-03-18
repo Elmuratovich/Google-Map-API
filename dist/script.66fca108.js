@@ -136895,6 +136895,10 @@ function () {
     };
   }
 
+  User.prototype.markerContent = function () {
+    return "\n            <h1>\n                User Name <b>".concat(this.name, "</b>\n            </h1>\n        ");
+  };
+
   return User;
 }();
 
@@ -136927,6 +136931,10 @@ function () {
     };
   }
 
+  Company.prototype.markerContent = function () {
+    return "\n            <div>\n                <h2>Company Name: ".concat(this.companyName, "</h2>\n                <h2>Company CatchPhrase: ").concat(this.catchPhrase, "</h2>\n            </div>\n        ");
+  };
+
   return Company;
 }();
 
@@ -136953,12 +136961,20 @@ function () {
   }
 
   CustomMap.prototype.addMarker = function (mapable) {
-    new google.maps.Marker({
+    var _this = this;
+
+    var marker = new google.maps.Marker({
       map: this.googleMap,
       position: {
         lat: mapable.location.lat,
         lng: mapable.location.lng
       }
+    });
+    marker.addListener("click", function () {
+      var infoWindow = new google.maps.InfoWindow({
+        content: mapable.markerContent()
+      });
+      infoWindow.open(_this.googleMap, marker);
     });
   };
 
@@ -137012,7 +137028,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35357" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "42463" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
